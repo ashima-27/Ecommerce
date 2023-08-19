@@ -40,8 +40,8 @@ async function fetchProductById (req, res) {
   try {
     console.log('Im here')
     const { id } = req.params
-
-    const product = await Product.findOne({ where: id })
+console.log(req.params)
+    const product = await Product.findOne({ where:{id: id} })
     res.status(200).json(product)
   } catch (err) {
     console.log('error is : ', err)
@@ -102,9 +102,22 @@ async function updateProduct (req, res) {
   try {
     console.log('Im here')
     const { id } = req.params
-
+   let obj={
+  
+            title: req.body.title,
+            description:  req.body.description,
+             price : req.body.price,
+             discountPercentage : req.body.discountPercentage,
+             rating : req.body.rating,
+             stock : req.body.stock,
+             brand :  req.body.brand ,
+             category :  req.body.category ,
+             thumbnail :  req.body.thumbnail ,
+             deleted:req.body.deleted,
+             discountPrice : req.body.discountPrice,
+   }
     const product = await Product.findOne({
-      where: id
+      where: {id:id}
     })
     if (!product) {
       return res.status(404).json({ error: 'Product not found' })
@@ -113,7 +126,9 @@ async function updateProduct (req, res) {
     product.discountPrice = Math.round(
       product.price * (1 - product.discountPercentage / 100)
     )
-    const updatedProduct = await product.save()
+    const updatedProduct = await product.update(obj,{
+      where: {id:id}
+    })
 
     respObj.Data = updatedProduct
     respObj.isSuccess = true

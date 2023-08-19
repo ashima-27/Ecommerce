@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
     class Brand extends Model {
         
         static associate(models) {
-          
+            Brand.belongsTo(models.product,{
+                foreignKey: "id",
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE"
+              })
         }
     }
     Brand.init(

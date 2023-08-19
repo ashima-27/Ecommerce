@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {createUserAsync,selectLoggedInUser} from "../authSlice";
 import "../auth.css";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 export default function Signup() {
   const {
@@ -15,10 +15,10 @@ export default function Signup() {
   console.log(errors);
   const user  = useSelector(selectLoggedInUser);
   const dispatch = useDispatch();
-
+  const navigate=useNavigate();
   return (
     <>
-     {user && <Navigate to="/" replace={true}></Navigate>}
+     {/* {user && <Navigate to="/login" replace={true}></Navigate>} */}
      <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
             Create a New Account
           </h2>
@@ -28,7 +28,7 @@ export default function Signup() {
           onSubmit={handleSubmit((data) => {
             console.log(data);
             dispatch(createUserAsync({email:data.email ,password:data.password,addresses:[],role:'user'}))
-            // dispatch(createUserAsync(data))
+            navigate('/login')
           })}
         >
           <label class="font-semibold text-xs" for="usernameField">

@@ -102,7 +102,9 @@ export const productSlice = createSlice({
       })
       builder.addCase(fetchBrandsAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.brands = action.payload;
+        console.log(action.payload.Data)
+        state.brands = action.payload.Data;
+
         
       });
       builder.addCase(fetchCategoryAsync.pending, (state) => {
@@ -110,7 +112,7 @@ export const productSlice = createSlice({
       })
       builder.addCase(fetchCategoryAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.categories = action.payload;
+        state.categories = action.payload.Data;
         
       });
       builder.addCase(fetchProductByIdAsync.pending, (state) => {

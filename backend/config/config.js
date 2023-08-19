@@ -1,6 +1,15 @@
 require("dotenv").config();
+const crypto = require('crypto');
+
+const generateSecretKey = () => {
+  return crypto.randomBytes(32).toString('hex');
+};
+
+const secretKey = generateSecretKey();
 
 module.exports = {
+  secretKey: secretKey,
+  expiresIn: '1d', // 
   development: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,

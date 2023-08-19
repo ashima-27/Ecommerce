@@ -29,6 +29,7 @@ import AdminProductDetailPage from './pages/AdminProductDetailPage ';
 import ProductForm from './features/admin/ProductForm';
 import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
+import ResetPassword from './features/auth/components/RenamePassword';
 
 const router = createBrowserRouter([
  {
@@ -62,7 +63,11 @@ const router = createBrowserRouter([
   },
   {
     path:"/admin/product-detail/:id",
-    element:(<Protected><AdminProductDetailPage></AdminProductDetailPage></Protected>)
+    element:(
+    // <ProtectedAdmin>
+    <AdminProductDetailPage></AdminProductDetailPage>
+    // {/* </ProtectedAdmin> */}
+    )
   },
   {
     path: '/admin/product-form/edit/:id',
@@ -114,6 +119,12 @@ const router = createBrowserRouter([
     element:(
       <AdminOrdersPage></AdminOrdersPage>
     )
+   },
+   {
+     path:'/reset-password',
+     element:(
+      <ResetPassword></ResetPassword>
+     )
    },
   {
     path:'*',

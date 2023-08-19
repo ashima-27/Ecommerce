@@ -61,9 +61,9 @@ export default function ProductDetail() {
     const newItem = {
       product: product.id,
       quantity: 1,
-    thumbnail:product.images[0],
-    title:product.title,
-    discountPercentage:product.discountPercentage
+    thumbnail:product?.images[0],
+    title:product?.title,
+    discountPercentage:product?.discountPercentage
 
     };
     if (selectedColor) {
@@ -110,7 +110,7 @@ export default function ProductDetail() {
           ))} */}
           <li className="text-sm">
             <p  aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
-              {product.title}
+              {product?.title}
             </p>
           </li>
         </ol>
@@ -120,31 +120,35 @@ export default function ProductDetail() {
       <div className="max-w-2xl mx-auto mt-6 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
         <div className="hidden overflow-hidden rounded-lg aspect-h-4 aspect-w-3 lg:block">
           <img
-            src={product.images[0]}
-            alt={product.title}
+            // src={product?.images[0]}
+            src={product?.thumbnail}
+            alt={product?.title}
             className="object-cover object-center w-full h-full"
           />
         </div>
         <div className="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
           <div className="overflow-hidden rounded-lg aspect-h-2 aspect-w-3">
             <img
-                src={product.images[1]}
-            alt={product.title}
+                // src={product?.images[1]}
+                src={product?.thumbnail}
+            alt={product?.title}
               className="object-cover object-center w-full h-full"
             />
           </div>
           <div className="overflow-hidden rounded-lg aspect-h-2 aspect-w-3">
             <img
-                src={product.images[2]}
-            alt={product.title}
+                // src={product?.images[2]}
+                src={product?.thumbnail}
+            alt={product?.title}
               className="object-cover object-center w-full h-full"
             />
           </div>
         </div>
         <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
           <img
-             src={product.images[3]}
-            alt={product.title}
+            //  src={product?.images[3]}
+            src={product?.thumbnail}
+            alt={product?.title}
             className="object-cover object-center w-full h-full"
           />
         </div>
@@ -177,7 +181,7 @@ export default function ProductDetail() {
                   />
                 ))}
               </div>
-              <p className="sr-only">{product.rating} out of 5 stars</p>
+              <p className="sr-only">{product?.rating} out of 5 stars</p>
              
              
             </div>

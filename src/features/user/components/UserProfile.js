@@ -9,7 +9,7 @@ export default function UserProfile() {
   console.log(userInfo)
   const [selectedEditIndex, setSelectedEditIndex] = useState(-1);
   const [showAddAddressForm, setShowAddAddressForm] = useState(false);
-
+const email=  localStorage.getItem("email")
 
   const {
     register,
@@ -20,9 +20,9 @@ export default function UserProfile() {
   } = useForm();
 
   const handleEdit = (addressUpdate, index) => {
-    const newUser = { ...userInfo, addresses: [...userInfo.addresses] }; // for shallow copy issue
-    newUser.addresses.splice(index, 1, addressUpdate);
-    dispatch(updateUserAsync(newUser));
+    // const newUser = { ...userInfo, addresses: [...userInfo.addresses] }; // for shallow copy issue
+    // newUser.addresses.splice(index, 1, addressUpdate);
+    dispatch(updateUserAsync(email));
     setSelectedEditIndex(-1);
   };
   const handleRemove = (e, index) => {
@@ -55,7 +55,7 @@ export default function UserProfile() {
   };
   
 useEffect(()=>
-{dispatch(fetchLoggedInUserAsync())},[])
+{dispatch(fetchLoggedInUserAsync(email))},[])
 
   return (
     <div>
@@ -63,10 +63,10 @@ useEffect(()=>
         <div className="px-4 py-6 border-t border-gray-200 sm:px-6">
           <h1 className="my-5 text-4xl font-bold tracking-tight text-gray-900">
             {/* Name: {userInfo?.name ? userInfo?.name : 'New User'} */}
-            Name: {userInfo?.name ? userInfo?.name : 'New User'}
+            {/* Name: {userInfo?.name ? userInfo?.name : 'New User'} */}
           </h1>
           <h3 className="my-5 text-xl font-bold tracking-tight text-red-900">
-            email address : {userInfo?.email}
+            email address : 
           </h3>
           {userInfo?.role === 'admin' && (
             <h3 className="my-5 text-xl font-bold tracking-tight text-red-900">

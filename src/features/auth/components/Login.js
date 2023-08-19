@@ -1,89 +1,15 @@
-// import React, { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import {
-// 	checkUserAsync, selectError, selectLoggedInUser
- 
-// } from '../authSlice';
-// import '../auth.css';
-// import {Link, Navigate} from 'react-router-dom';
-// import { useForm } from "react-hook-form";
-// export default function Login() {
-// 	const {
-// 		register,
-// 		handleSubmit,
-// 		watch,
-// 		formState: { errors },
-// 	  } = useForm();
-//   const error = useSelector(selectError);
-//   const user =useSelector(selectLoggedInUser)
-//   const dispatch = useDispatch();
- 
-//   return (
-//     <>
-//   {user && <Navigate to="/login" ></Navigate>}
-// <div class="flex flex-col items-center justify-center w-screen h-screen bg-gray-200 text-gray-700">
-// 	<form class="flex flex-col bg-white rounded shadow-lg p-12 mt-12"  onSubmit={handleSubmit((data) => {
-// 		 dispatch(
-//                checkUserAsync({ email: data.email, password: data.password })
-//               );
-//             console.log(data);
-//                      })}>
-// 		<label class="font-semibold text-xs" for="usernameField">Username or Email</label>
-// 		<input class="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2" type="email" id="email"    {...register(
-//               "email",
-//               { required: 'Email is' },
-//               {
-//                 pattern: {
-//                   value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/gi,
-//                   message: "email is not valid",
-//                 },
-//               }
-//             )}/>
-// 			  {errors?.email && (
-//             <p className="text-red-500">{errors.email.message}</p>
-//           )}
-// 		<label class="font-semibold text-xs mt-3" for="passwordField">Password</label>
-// 		<input class="flex items-center h-12 px-4 w-64 bg-gray-200 mt-2 rounded focus:outline-none focus:ring-2" type="password" id="password"
-//             {...register(
-//               "password",
-//               { required: "Password is required" },
-//               {
-//                 pattern: {
-//                   value:
-//                     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm,
-//                   message: `- at least 8 characters\n
-//                       - must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number\n
-//                       - Can contain special characters`,
-//                 },
-//               }
-//             )}/>
-// 			 {error && (
-//             <p className="text-red-500">{error.message}</p>
-//           )}
-// 		<button class="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700" >Login</button>
-// 		<div class="flex mt-6 justify-center text-xs">
-// 			<a class="text-blue-400 hover:text-blue-500" href="#">Forgot Password</a>
-// 			<span class="mx-2 text-gray-300">/</span>
-// 			<Link to="/signup" class="text-blue-400 hover:text-blue-500" href="#">Create an account</Link>
-// 		</div>
-// 	</form>
-	
-
-// </div>
-//     </>
-
-
-//   );
-// }
-
 
 import { useSelector, useDispatch } from 'react-redux';
 import { selectError, selectLoggedInUser } from '../authSlice';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { checkUserAsync } from '../authSlice';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
+import { fetchLoggedInUserAsync } from '../../user/userSlice';
+import { useState } from 'react';
+import UserProfile from '../../user/components/UserProfile';
 
 export default function Login() {
+  const[userId ,setUserId]=useState('')
   const dispatch = useDispatch();
   const error = useSelector(selectError);
   const user = useSelector(selectLoggedInUser);
@@ -92,18 +18,18 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-
+  
+  const storeEmailInLocalStorage = (email) => {
+    localStorage.setItem('email', email);
+  };
+  const navigate=useNavigate();
   return (
     <>
-      {user && <Navigate to="/" replace={true}></Navigate>}
+      {/* {user && <Navigate to="/" replace={true}></Navigate>} */}
+     
       <div className="flex flex-col justify-center flex-1 min-h-full px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            className="w-auto h-10 mx-auto"
-            src="/ecommerce.png"
-            alt="Your Company"
-          />
+         
           <h2 className="mt-10 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
             Log in to your account
           </h2>
@@ -113,12 +39,21 @@ export default function Login() {
           <form
             noValidate
             onSubmit={handleSubmit((data) => {
+             setUserId(data.email)
               dispatch(
                checkUserAsync({ email: data.email, password: data.password })
               );
+              storeEmailInLocalStorage(data.email);
+              if(data.email === 'admin27@gmail.com'){
+                navigate('/admin')
+              }else{
+              navigate('./')
+              }
+             
             })}
             className="space-y-6"
           >
+         
             <div>
               <label
                 htmlFor="email"

@@ -10,7 +10,7 @@ const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const qs = require('querystring')
 const nodemailer = require('nodemailer')
-const Category = require('../models').Category
+const Category = require('../models').category
 const sequelizeSelect = { type: Sequelize.QueryTypes.SELECT }
 
 async function fetchCategories (req, res) {
@@ -31,22 +31,29 @@ async function fetchCategories (req, res) {
   }
 }
 
-async function createCategory (req, res) {
+async function createCategory(req, res) {
   let respObj = {
     isSuccess: false,
     Message: 'Category created Successfully !',
     Data: null
-  }
+  };
   try {
-    const category = await Category.create(req.body)
+    const { label, value } = req.body;
+    console.log(req.body);
 
-    res.status(201).json(category)
+    // Create a new category using the Category model
+    const category = await Category.create({ label, value });
+
+    respObj.Data = category
+    respObj.isSuccess = true
+     res.status(200).json(category);
   } catch (err) {
-    console.log('error is : ', err)
-    let Message = 'Server Error'
-    return res.status(400).json(Message)
+    console.log('error is : ', err);
+    let Message = 'Server Error';
+    return res.status(400).json(Message);
   }
 }
+
 
 module.exports = {
   fetchCategories,

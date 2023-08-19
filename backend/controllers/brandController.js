@@ -38,7 +38,10 @@ async function fetchBrands (req, res) {
           Data: null
         }
         try {
-            const brand = await Brand.create(req.body)
+          const{label,value}=req.body
+            const brand = await Brand.create({
+              label,value
+            })
 
             res.status(201).json(brand)
         }catch (err) {

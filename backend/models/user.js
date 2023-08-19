@@ -15,11 +15,10 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE"
             }); 
-        // mny to many for product
-        //
+      
         }
     }
-    // User.init(
+   
     //     {  id:{ allowNull : false,
     //         primaryKey : true,
     //         type : DataTypes.UUID,
@@ -68,7 +67,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
           primaryKey: true,
           type: DataTypes.UUID,
-          defaultValue: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
         },
         email: {
           type: DataTypes.STRING,
@@ -76,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
           unique: true,
         },
         password: {
-          type: DataTypes.BLOB,
+          type: DataTypes.STRING,
           allowNull: false,
         },
         role: {
@@ -93,7 +92,7 @@ module.exports = (sequelize, DataTypes) => {
                         },
        addresses: {
             type: DataTypes.STRING, 
-            defaultValue: ' '
+           allowNull:true
           },
       },
       {

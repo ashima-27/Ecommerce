@@ -78,9 +78,9 @@ function ProductForm() {
       setValue('discountPercentage', selectedProduct?.discountPercentage);
       setValue('thumbnail', selectedProduct?.thumbnail);
       setValue('stock', selectedProduct?.stock);
-      setValue('image1', selectedProduct?.images[0]);
-      setValue('image2', selectedProduct?.images[1]);
-      setValue('image3', selectedProduct?.images[2]);
+      // setValue('image1', selectedProduct?.images[0]);
+      // setValue('image2', selectedProduct?.images[1]);
+      // setValue('image3', selectedProduct?.images[2]);
       setValue('brand', selectedProduct?.brand);
       setValue('category', selectedProduct?.category);
     //   setValue('highlight1', selectedProduct?.highlights[0]);
@@ -100,6 +100,7 @@ function ProductForm() {
 
   const handleDelete = () => {
     const product = { ...selectedProduct };
+     console.log(product)
     product.deleted = true;
     dispatch(updateProductAsync(product));
   };

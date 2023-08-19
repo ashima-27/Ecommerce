@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectAllProducts,selectTotalItems,fetchProductsByFiltersAsync,selectCategory,selectBrands,fetchBrandsAsync,fetchCategoryAsync} from './productSlice'
+import { fetchAllProductsAsync,selectAllProducts,selectTotalItems,fetchProductsByFiltersAsync,selectCategory,selectBrands,fetchBrandsAsync,fetchCategoryAsync} from './productSlice'
 import './product.css'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
@@ -35,7 +35,7 @@ export default function ProductList () {
  
 
   const handleSort=(e,option)=>{
-    const sort={_sort:option.sort,_order:option.order};
+    const sort={_sort:option?.sort,_order:option?.order};
     console.log(sort)
      setSort(sort); 
    
@@ -51,7 +51,7 @@ export default function ProductList () {
 
 useEffect(()=>{
   const pagination={_page:page,_limit:ITEMS_PER_PAGE}
-  //  dispatch(fetchAllProductsAsync());
+   dispatch(fetchAllProductsAsync());
   dispatch(fetchProductsByFiltersAsync({filter,sort,pagination}));
 },[dispatch,filter,sort,page])
 
@@ -267,7 +267,7 @@ function MobileFilter({filter, setFilter,mobileFiltersOpen,setMobileFiltersOpen}
                             <h3 className='flow-root -mx-2 -my-3'>
                               <Disclosure.Button className='flex items-center justify-between w-full px-2 py-3 text-gray-400 bg-white hover:text-gray-500'>
                                 <span className='font-medium text-gray-900'>
-                                  {section.name}
+                                  {section?.name}
                                 </span>
                                 <span className='flex items-center ml-6'>
                                   {open ? (
@@ -286,7 +286,7 @@ function MobileFilter({filter, setFilter,mobileFiltersOpen,setMobileFiltersOpen}
                             </h3>
                             <Disclosure.Panel className='pt-6'>
                               <div className='space-y-6'>
-                                {section.options.map((option, optionIdx) => (
+                                {section?.options?.map((option, optionIdx) => (
                                   <div
                                     key={option.value}
                                     className='flex items-center'
@@ -294,7 +294,7 @@ function MobileFilter({filter, setFilter,mobileFiltersOpen,setMobileFiltersOpen}
                                     <input
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
                                       name={`${section.id}[]`}
-                                      defaultValue={option.value}
+                                      defaultValue={option?.value}
                                       type='checkbox'
                                       defaultChecked={option.checked}
                                       onChange={e=>handleFilter(e,section,option)}
@@ -304,7 +304,7 @@ function MobileFilter({filter, setFilter,mobileFiltersOpen,setMobileFiltersOpen}
                                       htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                       className='flex-1 min-w-0 ml-3 text-gray-500'
                                     >
-                                      {option.label}
+                                      {option?.label}
                                     </label>
                                   </div>
                                 ))}
@@ -326,7 +326,8 @@ function MobileFilter({filter, setFilter,mobileFiltersOpen,setMobileFiltersOpen}
 function  DesktopFilter({filter, setFilter}) {
   const brands=useSelector(selectBrands);
   const categories=useSelector(selectCategory)
-
+console.log("brands:",brands)
+console.log('cat:',categories)
   
   const filters = [
     {
@@ -345,9 +346,9 @@ function  DesktopFilter({filter, setFilter}) {
   const handleFilter=(e,section,option)=>{
     const newFilter={...filter}
     if(e.target.checked){
-      newFilter[section.id]=option.value
+      newFilter[section.id]=option?.value
     }else{
-      delete newFilter[section.id];
+      delete newFilter[section?.id];
     }
    
      setFilter(newFilter)
@@ -393,7 +394,7 @@ function  DesktopFilter({filter, setFilter}) {
   {filters.map(section => (
     <Disclosure
       as='div'
-      key={section.id}
+      key={section.options.id}
       className='py-6 border-b border-gray-200'
     >
       {({ open }) => (
@@ -401,7 +402,7 @@ function  DesktopFilter({filter, setFilter}) {
           <h3 className='flow-root -my-3'>
             <Disclosure.Button className='flex items-center justify-between w-full py-3 text-sm text-gray-400 bg-white hover:text-gray-500'>
               <span className='font-medium text-gray-900'>
-                {section.name}
+                {section?.name}
               </span>
               <span className='flex items-center ml-6'>
                 {open ? (
@@ -422,13 +423,13 @@ function  DesktopFilter({filter, setFilter}) {
             <div className='space-y-4'>
               {section.options.map((option, optionIdx) => (
                 <div
-                  key={option.value}
+                  key={option?.value}
                   className='flex items-center'
                 >
                   <input
                     id={`filter-${section.id}-${optionIdx}`}
                     name={`${section.id}[]`}
-                    defaultValue={option.value}
+                    defaultValue={option?.value}
                     type='checkbox'
                     defaultChecked={option.checked}
                     onChange={e=>handleFilter(e,section,option)}
@@ -438,7 +439,7 @@ function  DesktopFilter({filter, setFilter}) {
                     htmlFor={`filter-${section.id}-${optionIdx}`}
                     className='ml-3 text-sm text-gray-600'
                   >
-                    {option.label}
+                    {option?.label}
                   </label>
                 </div>
               ))}
@@ -540,25 +541,25 @@ function ProductGrid(){
       </h2>
 
       <div className='grid grid-cols-1 mt-6 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8'>
-        {products.map(product => (
+        {products?.map(product => (
 <>                        <Link to={`/product-detail/${product.id}`}>
           <div key={product.id} className='relative p-2 border-2 border-solid group border-grey-200'>
             <div className='w-full overflow-hidden bg-gray-200 rounded-md min-h-60 aspect-h-1 aspect-w-1 lg:aspect-none group-hover:opacity-75 lg:h-60'>
               <img
-                src={product.thumbnail}
-                alt={product.title}
+                src={product?.thumbnail}
+                alt={product?.title}
                 className='object-cover object-center w-full h-full lg:w-full lg:h-full'
               />
             </div>
             <div className='flex justify-between mt-4'>
               <div>
                 <h3 className='text-sm text-gray-700'>
-                  <a href={product.thumbnail}>
+                  <a href={product?.thumbnail}>
                     <span
                       aria-hidden='true'
                       className='absolute inset-0'
                     />
-                    {product.title}
+                    {product?.title}
                   </a>
                 </h3>
                 <p className='mt-1 text-sm text-gray-500'>
@@ -569,10 +570,10 @@ function ProductGrid(){
               <div>
              
               <p className='text-sm font-medium text-gray-900'>
-                ${Math.round(product.price *(1-product.discountPercentage/100))}
+                ${Math.round(product?.price *(1-product?.discountPercentage/100))}
               </p>
               <p className='text-sm font-medium text-gray-600 line-through'>
-                ${product.price}
+                ${product?.price}
               </p>
               </div>
             

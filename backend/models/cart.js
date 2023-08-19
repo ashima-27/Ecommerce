@@ -6,14 +6,19 @@ module.exports = (sequelize, DataTypes) => {
 
         static associate(models) {
             Cart.belongsTo(models.user,{
-                foreignKey: "id",
+                foreignKey: "userId",
+                onDelete: "CASCADE",
+                onUpdate: "CASCADE",
+              })
+              Cart.belongsTo(models.product,{
+                foreignKey: "productId",
                 onDelete: "CASCADE",
                 onUpdate: "CASCADE"
               })
               Cart.belongsTo(models.order,{
                 foreignKey: "id",
                 onDelete: "CASCADE",
-        onUpdate: "CASCADE"
+                 onUpdate: "CASCADE"
               })
         }
     }
@@ -23,11 +28,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 primaryKey: true,
                 type: DataTypes.UUID,
-                defaultValue: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
             },
             quantity: { type: DataTypes.INTEGER},
-            product: { type: DataTypes.UUID ,allowNull:false},
-            users: { type: DataTypes.UUID,allowNull:false },
+            productId: { type: DataTypes.UUID ,allowNull:false},
+            userId: { type: DataTypes.UUID,allowNull:false },
             color: {
                 type: DataTypes.STRING
             },

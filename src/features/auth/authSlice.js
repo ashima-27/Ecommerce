@@ -13,39 +13,67 @@ const initialState = {
 
 export const createUserAsync = createAsyncThunk(
   'auth/createUser',
-  async (userData) => {
-    const response = await createUser(userData);
-  
-    return response.data;
-   
+  async (userdata, thunkAPI) => {
+    try {
+      console.log("userdata", userdata);
+      const response = await fetch('http://localhost:4000/users/createUser', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(userdata),
+      });
+      
+      let data = await response.json();
+      console.log(data, "api");
+      
+      if (response.status === 200) {
+        console.log(data);
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data); 
+      }
+    } catch (error) {
+      console.log(error, "err");
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
   }
-  // async (userdata, thunkAPI) => {
-  //   try {
-     
-  //     const response = await fetch(`http://localhost:4000/users/createUser`, {
-  //       method: "POST",
-  //       // headers,
-  //       body: JSON.stringify(userdata),
-  //     });
-  //     let data = await response.json();
-  //     if (response.status === 200) {
-  //       return data;
-  //     } else {
-  //       return thunkAPI.rejectWithValue(data); 
-  //     }
-  //   } catch (error) {
-  //     console.log(error, "err");
-  //     return thunkAPI.rejectWithValue({ error: error.message });
-  //   }
-  // }
 );
+
 // );
 export const checkUserAsync = createAsyncThunk(
   'auth/checkUser',
-  async (loginInfo) => {
-    const response = await checkUser(loginInfo);
+  // async (loginInfo) => {
+  //   const response = await checkUser(loginInfo);
   
-    return response.data;
+  //   return response.data;
+  // }
+  async (loginInfo, thunkAPI) => {
+    try {
+      const email= loginInfo.email;
+      const password= loginInfo.password;
+      console.log("userdata", loginInfo);
+      const response = await fetch(`http://localhost:4000/users/fetchUserById/${email}`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(loginInfo),
+      });
+      
+      let data = await response.json();
+      console.log(data, "api");
+      
+      if (response.status === 200) {
+        console.log(data);
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data); 
+      }
+    } catch (error) {
+      console.log(error, "err");
+      return thunkAPI.rejectWithValue({ error: error.message });
+    }
   }
 );
 export const updateUserAsync = createAsyncThunk(
@@ -117,10 +145,9 @@ export const authSlice = createSlice({
       .addCase(createUserAsync.pending, (state) => {
         state.status = 'loading';
       })
-      builder.addCase(createUserAsync.fulfilled, (state, {payload}) => {
+      builder.addCase(createUserAsync.fulfilled, (state,{payload}) => {
         state.status = 'idle';
-        console.log(payload)
-        state.loggedInUser =payload;
+        state.loggedInUser =payload
       });
       builder
       .addCase(checkUserAsync.pending, (state) => {

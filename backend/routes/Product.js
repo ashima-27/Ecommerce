@@ -6,6 +6,6 @@ const productcontroller =require('../controllers/productController');
 
 router.post('/createProduct',productcontroller.createProduct);
 router.get('/fetchAllProducts',productcontroller.fetchAllProducts);
-router.get('/:id',productcontroller.fetchProductById);
-router.patch('/:id',productcontroller.updateProduct);
+router.get('/fetchProductById/:id',productcontroller.fetchProductById);
+router.patch('/updateProduct/:id',productcontroller.updateProduct);
 module.exports=router;
